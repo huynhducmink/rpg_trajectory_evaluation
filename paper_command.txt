@@ -1,0 +1,2 @@
+python2 scripts/analyze_trajectories.py \
+          writing_paper.yaml --output_dir=/mnt/sda1/bag_file_paper/image_res/all_dataset/ --results_dir=/mnt/sda1/bag_file_paper/image_res/all_dataset/ --platform ivsr --odometry_error_per_dataset --overall_odometry_error --plot_trajectories --no_plot_aligned --rmse_table --rmse_boxplot --no_sort_names

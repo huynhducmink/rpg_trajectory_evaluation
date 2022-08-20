@@ -22,7 +22,7 @@ from fn_constants import kNsToEstFnMapping, kNsToMatchFnMapping, kFnExt
 init(autoreset=True)
 
 rc('font', **{'family': 'serif', 'serif': ['Cardo']})
-rc('text', usetex=True)
+rc('text', usetex=False)
 
 FORMAT = '.pdf'
 
@@ -30,8 +30,8 @@ def spec(N):
     t = np.linspace(-510, 510, N)                                              
     return np.round(np.clip(np.stack([-t, 510-np.abs(t), t], axis=1), 0, 255)).astype("float32")/255
 
-PALLETE = spec(20)
-
+#PALLETE = spec(20)
+PALLETE = ["#c96840","#8675ca","#9b9d3f","#c9578c","#50ac72"]
 
 def collect_odometry_error_per_dataset(dataset_multierror_list,
                                        dataset_names):
@@ -101,18 +101,33 @@ def plot_odometry_error_per_dataset(dataset_rel_err, dataset_names, algorithm_na
 
         fig = plt.figure(figsize=(12, 3))
         ax = fig.add_subplot(
-            121, xlabel='Distance traveled (m)',
-            ylabel='Translation error (\%)')
+            121, xlabel='Sub trajectory length (m)',
+            ylabel='Translation error (%)')
         pu.boxplot_compare(ax, distances, [rel_err['trans_err_perc'][v] for v in algorithm_names],
                            config_labels, config_colors, legend=False)
         ax = fig.add_subplot(
-            122, xlabel='Distance traveled (m)', ylabel='Rotation error (deg / m)')
+            122, xlabel='Sub trajectory length (m)', ylabel='Rotation error (degree/m)')
         pu.boxplot_compare(ax, distances, [rel_err['rot_deg_per_m'][v] for v in algorithm_names],
                            config_labels, config_colors, legend=True)
         fig.tight_layout()
         fig.savefig(output_dir+'/'+dataset_nm +
                     '_trans_rot_error'+FORMAT, bbox_inches="tight", dpi=args.dpi)
         plt.close(fig)
+
+        fig2 = plt.figure(figsize=(12, 3))
+        ax2 = fig2.add_subplot(
+            121, xlabel='Sub trajectory length (m)',
+            ylabel='Translation error (m)')
+        pu.boxplot_compare(ax2, distances, [rel_err['trans_err'][v] for v in algorithm_names],
+                           config_labels, config_colors, legend=False)
+        ax2 = fig2.add_subplot(
+            122, xlabel='Sub trajectory length (m)', ylabel='Yaw error (degree)')
+        pu.boxplot_compare(ax2, distances, [rel_err['ang_yaw_err'][v] for v in algorithm_names],
+                           config_labels, config_colors, legend=True)
+        fig2.tight_layout()
+        fig2.savefig(output_dir+'/'+dataset_nm +
+                    '_trans_rot_error_hm'+FORMAT, bbox_inches="tight", dpi=args.dpi)
+        plt.close(fig2)
 
 
 def collect_rmse_per_dataset(config_multierror_list,
@@ -216,7 +231,8 @@ def plot_trajectories(dataset_trajectories_list, dataset_names, algorithm_names,
                                    plot_settings['algo_colors'][alg],
                                    plot_settings['algo_labels'][alg])
         plt.sca(ax)
-        pu.plot_trajectory_top(ax, p_gt_raw, 'm', 'Groundtruth')
+        #pu.plot_trajectory_top(ax, p_gt_raw, 'm', 'Groundtruth')
+        pu.plot_trajectory_top(ax, p_gt_raw, 'm', 'preset_trajectory')
         plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
         fig.tight_layout()
         fig.savefig(output_dir+'/' + dataset_nm +

@@ -173,10 +173,12 @@ if __name__ == '__main__':
         fig = plt.figure(figsize=(6, 5.5))
         ax = fig.add_subplot(111, aspect='equal',
                              xlabel='x [m]', ylabel='y [m]')
-        pu.plot_trajectory_top(ax, plot_traj.p_es_aligned, 'b', 'Estimate')
-        pu.plot_trajectory_top(ax, plot_traj.p_gt, 'm', 'Groundtruth')
-        pu.plot_aligned_top(ax, plot_traj.p_es_aligned, plot_traj.p_gt,
-                            plot_traj.align_num_frames)
+        #pu.plot_trajectory_top(ax, plot_traj.p_es_aligned, 'b', 'Estimate')
+        #pu.plot_trajectory_top(ax, plot_traj.p_gt, 'm', 'Groundtruth')
+        pu.plot_trajectory_top(ax, plot_traj.p_es_aligned, 'b', 'Setpoint trajectory')
+        pu.plot_trajectory_top(ax, plot_traj.p_gt, 'm', 'Actual trajectory')
+        #pu.plot_aligned_top(ax, plot_traj.p_es_aligned, plot_traj.p_gt,
+        #                    plot_traj.align_num_frames)
         plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
         fig.tight_layout()
         fig.savefig(plot_dir_i+'/trajectory_top' + '_' + plot_traj.align_str +
@@ -185,8 +187,8 @@ if __name__ == '__main__':
         fig = plt.figure(figsize=(6, 5.5))
         ax = fig.add_subplot(111, aspect='equal',
                              xlabel='x [m]', ylabel='z [m]')
-        pu.plot_trajectory_side(ax, plot_traj.p_es_aligned, 'b', 'Estimate')
-        pu.plot_trajectory_side(ax, plot_traj.p_gt, 'm', 'Groundtruth')
+        pu.plot_trajectory_side(ax, plot_traj.p_es_aligned, 'b', 'Setpoint trajectory')
+        pu.plot_trajectory_side(ax, plot_traj.p_gt, 'm', 'Actual trajectory')
         plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
         fig.tight_layout()
         fig.savefig(plot_dir_i+'/trajectory_side' + '_' + plot_traj.align_str +

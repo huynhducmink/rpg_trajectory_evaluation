@@ -31,7 +31,8 @@ def spec(N):
     return np.round(np.clip(np.stack([-t, 510-np.abs(t), t], axis=1), 0, 255)).astype("float32")/255
 
 #PALLETE = spec(20)
-PALLETE = ["#c96840","#8675ca","#9b9d3f","#c9578c","#50ac72"]
+#PALLETE = ["#c96840","#8675ca","#9b9d3f","#c9578c","#50ac72"]
+PALLETE = ["#fe0000","#000000","#0bff01","#011efe","#fe00f6"]
 
 def collect_odometry_error_per_dataset(dataset_multierror_list,
                                        dataset_names):

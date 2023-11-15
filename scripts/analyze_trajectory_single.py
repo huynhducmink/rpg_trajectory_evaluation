@@ -15,6 +15,8 @@ import plot_utils as pu
 from fn_constants import kNsToEstFnMapping, kNsToMatchFnMapping, kFnExt
 from multiple_traj_errors import MulTrajError
 
+from pprint import pprint
+
 init(autoreset=True)
 rc('font', **{'family': 'serif', 'serif': ['Cardo']})
 rc('text', usetex=True)
@@ -96,6 +98,7 @@ if __name__ == '__main__':
     parser.add_argument('--png',
                         help='Save plots as png instead of pdf',
                         action='store_true')
+    parser.add_argument('--dpi', type=int, default=600)
     parser.add_argument('--plot_scale_traj',
                         help='whether to plot scale colored trajectory (slow)',
                         action='store_true')
@@ -155,6 +158,9 @@ if __name__ == '__main__':
             args.result_dir, est_type_i, n_trials, args.recalculate_errors)
         if traj_list:
             plot_traj = traj_list[args.mul_plot_idx[0]]
+            # print(" ///////////////////////////////////////////// ")
+            # pprint(vars(plot_traj))
+            # print(" ///////////////////////////////////////////// ")
         else:
             print("No success runs, not plotting.")
 
@@ -173,26 +179,26 @@ if __name__ == '__main__':
         fig = plt.figure(figsize=(6, 5.5))
         ax = fig.add_subplot(111, aspect='equal',
                              xlabel='x [m]', ylabel='y [m]')
-        #pu.plot_trajectory_top(ax, plot_traj.p_es_aligned, 'b', 'Estimate')
-        #pu.plot_trajectory_top(ax, plot_traj.p_gt, 'm', 'Groundtruth')
-        pu.plot_trajectory_top(ax, plot_traj.p_es_aligned, 'b', 'Setpoint trajectory')
-        pu.plot_trajectory_top(ax, plot_traj.p_gt, 'm', 'Actual trajectory')
+        pu.plot_trajectory_top(ax, plot_traj.p_es_aligned, 'b', 'Estimate')
+        pu.plot_trajectory_top(ax, plot_traj.p_gt, 'm', 'Groundtruth')
+        # pu.plot_trajectory_top(ax, plot_traj.p_es_aligned, 'b', 'Setpoint trajectory')
+        # pu.plot_trajectory_top(ax, plot_traj.p_gt, 'm', 'Actual trajectory')
         #pu.plot_aligned_top(ax, plot_traj.p_es_aligned, plot_traj.p_gt,
         #                    plot_traj.align_num_frames)
         plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
         fig.tight_layout()
         fig.savefig(plot_dir_i+'/trajectory_top' + '_' + plot_traj.align_str +
-                    FORMAT, bbox_inches="tight")
+                    FORMAT, bbox_inches="tight", dpi=args.dpi)
 
         fig = plt.figure(figsize=(6, 5.5))
         ax = fig.add_subplot(111, aspect='equal',
                              xlabel='x [m]', ylabel='z [m]')
-        pu.plot_trajectory_side(ax, plot_traj.p_es_aligned, 'b', 'Setpoint trajectory')
-        pu.plot_trajectory_side(ax, plot_traj.p_gt, 'm', 'Actual trajectory')
+        pu.plot_trajectory_side(ax, plot_traj.p_es_aligned, 'b', 'Estimate')
+        pu.plot_trajectory_side(ax, plot_traj.p_gt, 'm', 'Groundtruth')
         plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
         fig.tight_layout()
         fig.savefig(plot_dir_i+'/trajectory_side' + '_' + plot_traj.align_str +
-                    FORMAT, bbox_inches="tight")
+                    FORMAT, bbox_inches="tight", dpi=args.dpi)
 
         fig = plt.figure(figsize=(8, 2.5))
         ax = fig.add_subplot(
@@ -204,7 +210,7 @@ if __name__ == '__main__':
         ax.legend()
         fig.tight_layout()
         fig.savefig(plot_dir_i+'/translation_error' + '_' + plot_traj.align_str
-                    + FORMAT, bbox_inches="tight")
+                    + FORMAT, bbox_inches="tight", dpi=args.dpi)
 
         fig = plt.figure(figsize=(8, 2.5))
         ax = fig.add_subplot(
@@ -217,7 +223,7 @@ if __name__ == '__main__':
         ax.legend()
         fig.tight_layout()
         fig.savefig(plot_dir_i+'/rotation_error'+'_'+plot_traj.align_str +
-                    FORMAT, bbox_inches='tight')
+                    FORMAT, bbox_inches='tight', dpi=args.dpi)
 
         fig = plt.figure(figsize=(8, 2.5))
         ax = fig.add_subplot(
@@ -230,7 +236,7 @@ if __name__ == '__main__':
         ax.legend()
         fig.tight_layout()
         fig.savefig(plot_dir_i+'/scale_error'+'_'+plot_traj.align_str+FORMAT,
-                    bbox_inches='tight')
+                    bbox_inches='tight', dpi=args.dpi)
 
         if args.plot_scale_traj:
             fig = plt.figure(figsize=(6, 12))
@@ -255,7 +261,7 @@ if __name__ == '__main__':
                              plot_traj.p_gt[idx:idx+2, 2], color=c)
             fig.tight_layout()
             fig.savefig(plot_dir_i+'/scale_error_traj' + '_' +
-                        plot_traj.align_str + FORMAT, bbox_inches="tight")
+                        plot_traj.align_str + FORMAT, bbox_inches="tight", dpi=args.dpi)
 
         print(Fore.MAGENTA+">>> Plotting relative (odometry) error...")
         suffix = ''
@@ -277,7 +283,7 @@ if __name__ == '__main__':
                            labels, colors)
         fig.tight_layout()
         fig.savefig(plot_dir_i+'/rel_translation_error' + suffix + FORMAT,
-                    bbox_inches="tight")
+                    bbox_inches="tight", dpi=args.dpi)
         plt.close(fig)
 
         fig = plt.figure(figsize=(6, 2.5))
@@ -288,7 +294,7 @@ if __name__ == '__main__':
             ax, distances, rel_errors['rel_trans_perc'], labels, colors)
         fig.tight_layout()
         fig.savefig(plot_dir_i+'/rel_translation_error_perc'+suffix+FORMAT,
-                    bbox_inches="tight")
+                    bbox_inches="tight", dpi=args.dpi)
         plt.close(fig)
 
         fig = plt.figure(figsize=(6, 2.5))
@@ -299,7 +305,7 @@ if __name__ == '__main__':
                            labels, colors)
         fig.tight_layout()
         fig.savefig(plot_dir_i+'/rel_yaw_error' + suffix + FORMAT,
-                    bbox_inches="tight")
+                    bbox_inches="tight", dpi=args.dpi)
         plt.close(fig)
 
         print(Fore.GREEN +

@@ -23,7 +23,7 @@ class Trajectory:
     rel_error_prefix = 'relative_error_statistics_'
     saved_res_dir_nm = 'saved_results'
     cache_res_dir_nm = 'cached'
-    default_boxplot_perc = [0.1, 0.2, 0.3, 0.4, 0.5]
+    default_boxplot_perc = [1]
 
     def __init__(self, results_dir, platform='', alg_name='', dataset_name='',
                  align_type='sim3', align_num_frames=-1, suffix='',
